@@ -1,0 +1,25 @@
+{
+  "name": "review-hats-marketplace",
+  "owner": {
+    "name": "Cesar Avitia"
+  },
+  "metadata": {
+    "description": "Marketplace for the Review Hats code review plugin"
+  },
+  "plugins": [
+    {
+      "name": "review-hats",
+      "source": "./",
+      "description": "Multi-perspective code review with specialized AI agents inspired by Thinking Hats.",
+      "version": "1.0.0",
+      "category": "development",
+      "author": {
+        "name": "Cesar Avitia"
+      },
+      "repository": "https://github.com/ImCesar/review-hats",
+      "license": "MIT",
+      "keywords": ["code-review", "security", "architecture", "testing", "thinking-hats"],
+      "tags": ["review", "agents", "parallel"]
+    }
+  ]
+}

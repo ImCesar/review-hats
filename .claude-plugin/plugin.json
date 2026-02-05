@@ -1,0 +1,11 @@
+{
+  "name": "review-hats",
+  "description": "Code review with specialized AI agents inspired by de Bono's Thinking Hats. Each hat reviews from a distinct perspective: security, architecture, correctness, performance, maintainability, contract safety, testing, and library usage.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Cesar Avitia"
+  },
+  "repository": "https://github.com/ImCesar/review-hats",
+  "license": "MIT",
+  "keywords": ["code-review", "security", "architecture", "testing", "thinking-hats"]
+}
