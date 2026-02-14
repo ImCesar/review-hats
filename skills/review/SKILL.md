@@ -174,6 +174,97 @@ After all hat agents return, combine their results into a unified report.
 ### Empty Sections
 If a severity section has no findings across all hats, omit it entirely.
 
+## Step 6: Rebuttal Phase (Agent Teams)
+
+**Skip this step if:**
+- The overall verdict is PASS (nothing to debate)
+- The user passed `--no-rebuttal`
+- No Critical or Important findings exist
+
+**If skipped**, present the Phase 1 report from Step 5 as the final output and stop.
+
+### 6a: Check Agent Teams Availability
+
+Before attempting to create an agent team, verify the feature is available. If agent teams fail to initialize, fall back gracefully:
+
+- Present the Phase 1 report as-is
+- Append a note: "Rebuttal phase skipped — enable agent teams with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings for automated finding challenges."
+
+### 6b: Collect Debatable Findings
+
+From the Phase 1 report, extract all Critical and Important findings. For each finding, note:
+- Which hat produced it
+- The severity level
+- The full finding text (What + Why)
+
+Group by severity: Criticals first, then Important.
+
+### 6c: Create the Agent Team
+
+Tell Claude to create an agent team for the rebuttal. The team structure:
+
+- **Lead (you, Blue Hat)**: Judge — renders verdicts, does NOT argue
+- **Developer Advocate**: One teammate using the `developer-advocate` agent
+- **Hat teammates**: One teammate per hat that produced Critical or Important findings
+
+Spawn prompt for the Developer Advocate:
+```
+You are the Developer Advocate in a rebuttal review. Your job is to defend the code author's design choices.
+
+## Changed Files
+<list of changed files>
+
+## Diff
+<full diff output>
+
+## Instructions
+- Follow your agent definition exactly
+- You will receive findings one at a time
+- For each finding, respond with CONCEDE, DEFEND, or PARTIAL
+- Explore the codebase thoroughly before responding to each finding
+- Follow the rebuttal protocol in references/rebuttal-protocol.md
+```
+
+Spawn prompt for each hat teammate:
+```
+You are the [Color] Hat in a rebuttal review. You produced findings during Phase 1 that are now being challenged.
+
+## Your Phase 1 Findings
+<this hat's findings from Phase 1>
+
+## Instructions
+- The Developer Advocate will respond to each of your findings
+- For each response, reply with ACCEPT or COUNTER per the rebuttal protocol
+- Follow the rebuttal protocol in references/rebuttal-protocol.md
+- Only counter if you have specific evidence the defense is insufficient
+```
+
+### 6d: Run the Debate
+
+For each debatable finding, in severity order:
+
+1. **Message the relevant hat teammate** asking it to present the finding
+2. **Message the Developer Advocate** with the hat's finding presentation
+3. **Message the hat teammate** with the Developer's response
+4. **Render verdict** (Upheld, Withdrawn, or Downgraded) based on the exchange
+
+Record each verdict and the key arguments from both sides.
+
+### 6e: Produce the Revised Report
+
+After all findings have been debated, produce the revised report following the format in `references/revised-report-format.md`.
+
+Recalculate each hat's verdict based on remaining upheld findings:
+- FAIL if any Upheld Critical findings
+- WARN if any Upheld Important findings (no Upheld Criticals)
+- PASS if all Critical/Important were Withdrawn or Downgraded
+
+### 6f: Clean Up the Team
+
+After the revised report is produced:
+1. Ask all teammates to shut down
+2. Clean up the team resources
+
 ## Important Notes
 
 - You are running inline (not forked) so you CAN use the Task tool to spawn agents
