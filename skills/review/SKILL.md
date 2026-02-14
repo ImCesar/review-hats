@@ -47,6 +47,7 @@ Determine what diff to review:
 |------|----------|
 | *(default)* | Findings only |
 | `--verbose` | Include strengths section from each hat |
+| `--no-rebuttal` | Skip Phase 2 rebuttal even if verdict is WARN/FAIL |
 
 ## Step 2: Gather the Diff
 
