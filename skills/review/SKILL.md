@@ -268,6 +268,9 @@ After the revised report is produced:
 ## Important Notes
 
 - You are running inline (not forked) so you CAN use the Task tool to spawn agents
-- Dispatch ALL selected hats in a single message for parallel execution
+- Dispatch ALL selected hats in a single message for parallel execution (Phase 1)
 - If a hat agent fails or returns malformed output, note it in the report but continue with other hats
 - Keep synthesis concise — the hat reports have the details, the synthesis highlights what matters most
+- Phase 2 (rebuttal) uses agent teams, NOT the Task tool — these are full Claude Code sessions
+- If agent teams are unavailable or fail, fall back to the Phase 1 report gracefully
+- Always clean up the agent team after the rebuttal phase completes
