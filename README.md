@@ -46,6 +46,7 @@ claude --plugin-dir /path/to/review-hats
 /review-hats:review --files src/foo.ts  # Review specific files
 /review-hats:review --verbose           # Include strengths, not just findings
 /review-hats:review rw --staged         # Combine hat codes with flags
+/review-hats:review --no-rebuttal     # Skip rebuttal phase on WARN/FAIL
 ```
 
 ### Hat Selection
@@ -72,6 +73,24 @@ claude --plugin-dir /path/to/review-hats
 | *(default)* | Findings only — actionable items grouped by severity |
 | `--verbose` | Full report with strengths from each hat |
 
+### Rebuttal Phase
+
+When a review produces a **WARN** or **FAIL** verdict, review-hats automatically runs a rebuttal phase using Claude Code agent teams. A **Developer advocate** explores the codebase to understand design intent, then debates each Critical and Important finding with the hat that produced it.
+
+Each finding gets a verdict:
+- **Upheld** — Finding stands after debate
+- **Withdrawn** — Finding dismissed; Developer showed it was intentional
+- **Downgraded** — Finding valid but severity reduced
+
+The revised report shows both original and final verdicts.
+
+To skip the rebuttal phase:
+```
+/review-hats:review --no-rebuttal
+```
+
+> **Note**: Rebuttal requires the experimental agent teams feature. Enable it by adding `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` to your settings. If not enabled, the Phase 1 report is presented as-is.
+
 ### Severity Levels
 
 - **Critical** — Must fix before merge. Bugs, vulnerabilities, data loss risks.
@@ -97,8 +116,11 @@ review-hats/
 │   └── review/
 │       ├── SKILL.md                   # Blue Hat orchestrator
 │       └── references/
-│           └── hat-output-format.md   # Shared output format
+│           ├── hat-output-format.md   # Shared output format
+│           ├── rebuttal-protocol.md   # Debate protocol for rebuttal
+│           └── revised-report-format.md # Post-rebuttal report format
 ├── agents/
+│   ├── developer-advocate.md          # Developer advocate for rebuttal
 │   ├── red-hat-security.md
 │   ├── indigo-hat-architecture.md
 │   ├── white-hat-correctness.md
