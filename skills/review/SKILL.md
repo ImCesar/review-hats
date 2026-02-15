@@ -3,7 +3,8 @@ name: review
 description: >
   Run a multi-perspective code review using specialized hat agents.
   Each hat reviews from a distinct angle (security, architecture, correctness, etc.)
-  and produces findings grouped by severity. Dispatches hats in parallel and synthesizes a unified report.
+  and produces findings grouped by severity. Uses agent teams to keep hat agents alive
+  for rebuttal debate when findings are challenged.
 ---
 
 # Blue Hat Orchestrator: Review Hats
@@ -73,28 +74,39 @@ If the diff is empty, inform the user: "No changes found for the specified scope
 
 Announce which hats were selected and why, briefly.
 
-## Step 4: Dispatch Hat Agents in Parallel
+## Step 4: Create Review Team and Dispatch Hats
 
-Spawn all selected hat agents using the Task tool in a **single message** so they run in parallel.
+### Check Agent Teams Availability
 
-Each agent's prompt MUST include:
+Try to create an agent team named `review-hats`. If agent teams are unavailable (feature not enabled), fall back to the Task tool:
+
+- Spawn hat agents using the Task tool in a **single message** (fire-and-forget)
+- Note internally that rebuttal will be unavailable (Phase 2 requires agent teams)
+- If the overall verdict is WARN or FAIL, append to the report: "Rebuttal phase skipped — enable agent teams with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings for automated finding challenges."
+
+### Agent Team Dispatch (preferred)
+
+If agent teams are available, spawn all selected hat agents as teammates in a **single message** so they run in parallel.
+
+Each agent's spawn prompt MUST include:
 
 1. The full diff output (from Step 2)
 2. The list of changed files
 3. Whether verbose mode is on (for the Strengths section)
 4. Instructions to read surrounding code files for context using Read/Grep/Glob tools
 5. A reminder to follow the standardized output format from `references/hat-output-format.md`
+6. Instructions to send findings to the lead via SendMessage and then wait
 
-**Template for each agent dispatch:**
+**Spawn prompt for each hat teammate:**
 
-```
+~~~
 Review the following code changes from the perspective described in your agent definition.
 
 ## Changed Files
-<list of changed files>
+<one file path per line>
 
 ## Diff
-<full diff output>
+<complete git diff output from Step 2>
 
 ## Instructions
 - Analyze the diff thoroughly from your specialized perspective
@@ -105,7 +117,13 @@ Review the following code changes from the perspective described in your agent d
 <if verbose>- Include a "Strengths" section noting what's done well</if>
 <if not verbose>- Do NOT include a Strengths section</if>
 - Do NOT suggest fixes or write code. Report findings only.
-```
+- After completing your review, send your full report to the team lead.
+- Then wait — you may be recalled for rebuttal if your findings are challenged.
+~~~
+
+### Collect Results
+
+Wait for all hat agents to send their findings via messages. As each hat goes idle after sending its report, its findings are available. Proceed to Step 5 once all hats have reported.
 
 ## Step 5: Synthesize the Report
 
@@ -174,47 +192,36 @@ After all hat agents return, combine their results into a unified report.
 ### Empty Sections
 If a severity section has no findings across all hats, omit it entirely.
 
-## Step 6: Rebuttal Phase (Agent Teams)
+## Step 6: Rebuttal Phase
 
 **Skip this step if:**
 - The overall verdict is PASS (nothing to debate)
 - The user passed `--no-rebuttal`
 - No Critical or Important findings exist
+- Phase 1 fell back to Task tool (agent teams unavailable)
 
-**If skipped**, present the Phase 1 report from Step 5 as the final output and stop.
-
-### Check Agent Teams Availability
-
-Before attempting to create an agent team, verify the feature is available. If agent teams fail to initialize, fall back gracefully:
-
-- Present the Phase 1 report as-is
-- Append a note: "Rebuttal phase skipped — enable agent teams with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings for automated finding challenges."
+**If skipped**, present the Phase 1 report from Step 5 as the final output, clean up the team (if it exists), and stop.
 
 ### Collect Debatable Findings
 
 From the Phase 1 report, extract all Critical and Important findings into this structure:
 
-```
+~~~
 Hat: [color] [domain]
 Severity: [Critical | Important]
 Title: [finding title]
 Location: [file:line]
 What: [description]
 Why: [impact]
-```
+~~~
 
 Group by severity: Criticals first, then Important. This structure is the contract between Phase 1 (Step 5) and Phase 2 (Step 6) — the debate loop expects each finding in this format.
 
-### Create the Agent Team
+### Spawn Developer Advocate
 
-Tell Claude to create an agent team for the rebuttal. The team structure:
+Add the Developer Advocate to the existing review team as a new teammate:
 
-- **Lead (you, Blue Hat)**: Judge — renders verdicts, does NOT argue
-- **Developer Advocate**: One teammate using the `developer-advocate` agent
-- **Hat teammates**: One teammate per hat that produced Critical or Important findings
-
-Spawn prompt for the Developer Advocate:
-```
+~~~
 You are the Developer Advocate in a rebuttal review. Your job is to defend the code author's design choices.
 
 ## Changed Files
@@ -225,25 +232,11 @@ You are the Developer Advocate in a rebuttal review. Your job is to defend the c
 
 ## Instructions
 - Follow your agent definition exactly
-- You will receive findings one at a time
+- You will receive findings one at a time via messages from the team lead
 - For each finding, respond with CONCEDE, DEFEND, or PARTIAL
 - Explore the codebase thoroughly before responding to each finding
 - Follow the rebuttal protocol in references/rebuttal-protocol.md
-```
-
-Spawn prompt for each hat teammate:
-```
-You are the [Color] Hat in a rebuttal review. You produced findings during Phase 1 that are now being challenged.
-
-## Your Phase 1 Findings
-<this hat's findings extracted using the format from "Collect Debatable Findings">
-
-## Instructions
-- The Developer Advocate will respond to each of your findings
-- For each response, reply with ACCEPT or COUNTER per the rebuttal protocol
-- Follow the rebuttal protocol in references/rebuttal-protocol.md
-- Only counter if you have specific evidence the defense is insufficient
-```
+~~~
 
 ### Run the Debate
 
@@ -254,7 +247,7 @@ For each debatable finding, in severity order:
 3. **Message the hat teammate** with the Developer's response
 4. **Render verdict** (Upheld, Withdrawn, or Downgraded) based on the exchange
 
-Record each verdict and the key arguments from both sides.
+Record each verdict and the key arguments from both sides. The hat agents retain their full Phase 1 reasoning context, so their rebuttals draw on the analysis they already performed.
 
 ### Produce the Revised Report
 
@@ -268,14 +261,14 @@ Recalculate each hat's verdict based on remaining upheld findings:
 ### Clean Up the Team
 
 After the rebuttal phase completes (whether report generation succeeds or fails):
-1. Ask all teammates to shut down
+1. Send shutdown requests to all teammates
 2. Clean up the team resources (TeamDelete)
 
 ## Important Notes
 
-- You are running inline (not forked) so you CAN use the Task tool to spawn agents
 - Dispatch ALL selected hats in a single message for parallel execution (Phase 1)
+- Hat agents stay alive between Phase 1 and Phase 2 — do NOT shut them down before rebuttal
 - If a hat agent fails or returns malformed output, note it in the report but continue with other hats
 - Keep synthesis concise — the hat reports have the details, the synthesis highlights what matters most
-- Phase 2 (rebuttal) uses agent teams, NOT the Task tool — these are full Claude Code sessions
-- If agent teams are unavailable or fail, fall back to the Phase 1 report gracefully
+- If agent teams are unavailable, fall back to Task tool for Phase 1 and skip rebuttal gracefully
+- Always clean up the team after completing the review (whether Phase 1 only or after rebuttal)
