@@ -257,7 +257,7 @@ After all findings have been debated, produce the revised report following the f
 Recalculate each hat's verdict based on remaining upheld findings:
 - FAIL if any Upheld Critical findings
 - WARN if any Upheld Important findings (no Upheld Criticals)
-- PASS if all Critical/Important were Withdrawn or Downgraded
+- PASS if all Critical/Important were Withdrawn or Downgraded below Important
 
 ### 6f: Clean Up the Team
 

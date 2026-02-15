@@ -31,10 +31,11 @@ When presenting a finding for debate, restate it concisely:
 After a finding is presented, the Developer Advocate responds with one of three positions:
 
 ### Concede
-Use when the finding is genuinely valid.
+Use when the finding is genuinely valid. Optionally suggest a lower severity.
 ```
 **Position: CONCEDE**
 This finding is valid. [1 sentence explaining why.]
+- Suggested severity: [optional — e.g., Critical → Important]
 ```
 
 ### Defend
@@ -77,9 +78,11 @@ After the exchange, the team lead renders a verdict:
 
 | Outcome | When to Use |
 |---------|-------------|
-| **Upheld** | Developer CONCEDEd, OR hat COUNTERed with specific evidence and the finding still demonstrates real risk |
-| **Withdrawn** | Hat ACCEPTed the defense, OR Developer cited specific evidence (code, docs, tests) that directly addresses the concern |
-| **Downgraded** | Developer used PARTIAL with evidence of mitigating factors — concern is real but impact is lower than claimed |
+| **Upheld** | Developer CONCEDEd (without severity suggestion), OR hat COUNTERed with specific evidence and the finding still demonstrates real risk |
+| **Withdrawn** | Hat ACCEPTed a DEFEND position, OR Developer cited specific evidence (code, docs, tests) that directly addresses the concern |
+| **Downgraded** | Developer used PARTIAL (or CONCEDE with severity suggestion) and hat ACCEPTed the severity reduction — concern is real but impact is lower than claimed |
+
+**Disambiguation:** When Developer says PARTIAL and hat says ACCEPT, the verdict is always **Downgraded** (never Withdrawn). ACCEPT on a PARTIAL confirms the severity reduction, not the absence of a concern.
 
 ### Verdict Guidelines
 
