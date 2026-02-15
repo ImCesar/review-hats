@@ -7,7 +7,7 @@ When the rebuttal phase runs, the Blue Hat produces this revised report instead 
 
 **Scope**: [description of what was reviewed]
 **Hats**: [list of hats that ran, with color emoji circles]
-**Rebuttal**: Developer advocate challenged [N] findings — [M] upheld, [X] withdrawn, [Y] downgraded
+**Rebuttal**: Developer Advocate challenged [N] findings — [M] upheld, [X] withdrawn, [Y] downgraded
 
 ---
 

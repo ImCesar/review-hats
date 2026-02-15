@@ -75,7 +75,7 @@ claude --plugin-dir /path/to/review-hats
 
 ### Rebuttal Phase
 
-When a review produces a **WARN** or **FAIL** verdict, review-hats automatically runs a rebuttal phase using Claude Code agent teams. A **Developer advocate** explores the codebase to understand design intent, then debates each Critical and Important finding with the hat that produced it.
+When a review produces a **WARN** or **FAIL** verdict, review-hats automatically runs a rebuttal phase using Claude Code agent teams. A **Developer Advocate** explores the codebase to understand design intent, then debates each Critical and Important finding with the hat that produced it.
 
 Each finding gets a verdict:
 - **Upheld** — Finding stands after debate
@@ -120,7 +120,7 @@ review-hats/
 │           ├── rebuttal-protocol.md   # Debate protocol for rebuttal
 │           └── revised-report-format.md # Post-rebuttal report format
 ├── agents/
-│   ├── developer-advocate.md          # Developer advocate for rebuttal
+│   ├── developer-advocate.md          # Developer Advocate for rebuttal
 │   ├── red-hat-security.md
 │   ├── indigo-hat-architecture.md
 │   ├── white-hat-correctness.md

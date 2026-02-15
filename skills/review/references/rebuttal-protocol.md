@@ -1,6 +1,6 @@
 # Rebuttal Protocol
 
-This document defines the debate protocol for the rebuttal phase. All participants (Developer advocate and hat agents) MUST follow this protocol.
+This document defines the debate protocol for the rebuttal phase. All participants (Developer Advocate and hat agents) MUST follow this protocol.
 
 ## Debate Structure
 
