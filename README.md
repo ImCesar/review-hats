@@ -4,7 +4,7 @@ A Claude Code plugin that runs multi-perspective code reviews using specialized 
 
 ## How It Works
 
-A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hats, dispatches them **in parallel** as an agent team, and synthesizes their findings into a single report grouped by severity. Hat agents stay alive for the rebuttal phase, where a Developer Advocate challenges findings with full context from the original review.
+A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hats, dispatches them **in parallel** as an agent team, and synthesizes their findings into a single report grouped by severity. When findings are challenged, a Developer Advocate coordinates the rebuttal debate via direct messages with hat agents, then reports verdicts back to the orchestrator.
 
 ### The 8 Review Hats
 
@@ -47,7 +47,6 @@ claude --plugin-dir /path/to/review-hats
 /review-hats:review --verbose           # Include strengths, not just findings
 /review-hats:review rw --staged         # Combine hat codes with flags
 /review-hats:review --no-rebuttal     # Skip rebuttal phase on WARN/FAIL
-/review-hats:rebuttal --branch main    # Debate findings from a previous review
 ```
 
 ### Hat Selection
@@ -93,16 +92,6 @@ To skip the rebuttal phase:
 
 > **Note**: Rebuttal requires the experimental agent teams feature. Enable it by adding `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` to your settings. If not enabled, the Phase 1 report is presented as-is.
 
-### Standalone Rebuttal
-
-If you ran a review with `--no-rebuttal` (or agent teams weren't available), you can run the rebuttal separately:
-
-```
-/review-hats:rebuttal --branch main
-```
-
-The rebuttal skill looks for Phase 1 findings in the conversation history. Use the same scope flag you used for the original review so the Developer Advocate can explore the same diff.
-
 ### Severity Levels
 
 - **Critical** — Must fix before merge. Bugs, vulnerabilities, data loss risks.
@@ -131,10 +120,8 @@ review-hats/
 │   │       ├── hat-output-format.md   # Shared output format
 │   │       ├── rebuttal-protocol.md   # Debate protocol for rebuttal
 │   │       └── revised-report-format.md # Post-rebuttal report format
-│   └── rebuttal/
-│       └── SKILL.md                   # Standalone rebuttal orchestrator
 ├── agents/
-│   ├── developer-advocate.md          # Developer Advocate for rebuttal
+│   ├── developer-advocate.md          # Debate coordinator for rebuttal
 │   ├── red-hat-security.md
 │   ├── indigo-hat-architecture.md
 │   ├── white-hat-correctness.md
@@ -144,8 +131,7 @@ review-hats/
 │   ├── purple-hat-testing.md
 │   └── cyan-hat-library.md
 ├── commands/
-│   ├── review.md                      # Thin command alias
-│   └── rebuttal.md                    # Thin command alias
+│   └── review.md                      # Thin command alias
 └── README.md
 ```
 
