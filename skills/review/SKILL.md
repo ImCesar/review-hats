@@ -207,22 +207,22 @@ If a severity section has no findings across all hats, omit it entirely.
 From the Phase 1 report, extract all Critical and Important findings into this structure:
 
 ~~~
-Hat: [color] [domain]
+[ID]: [Title]
+Hat: [teammate-name]
 Severity: [Critical | Important]
-Title: [finding title]
 Location: [file:line]
 What: [description]
 Why: [impact]
 ~~~
 
-Group by severity: Criticals first, then Important. This structure is the contract between Phase 1 (Step 5) and Phase 2 (Step 6) — the debate loop expects each finding in this format.
+Number findings sequentially: C1, C2... for Critical, I1, I2... for Important. Include the hat's **teammate name** (e.g., `white-hat`, `red-hat-security`) so the DA knows who to message.
 
 ### Spawn Developer Advocate
 
 Add the Developer Advocate to the existing review team as a new teammate:
 
 ~~~
-You are the Developer Advocate in a rebuttal review. Your job is to defend the code author's design choices.
+You are the Developer Advocate and debate coordinator for this rebuttal review.
 
 ## Changed Files
 <one file path per line>
@@ -230,28 +230,25 @@ You are the Developer Advocate in a rebuttal review. Your job is to defend the c
 ## Diff
 <complete git diff output from Step 2>
 
+## Debatable Findings
+<all findings from the "Collect Debatable Findings" step above, in severity order>
+
 ## Instructions
 - Follow your agent definition exactly
-- You will receive findings one at a time via messages from the team lead
-- For each finding, respond with CONCEDE, DEFEND, or PARTIAL
-- Explore the codebase thoroughly before responding to each finding
+- For each finding, message the hat teammate by name (peer DM) to run the debate
+- After all findings are debated, send your verdict summary back to the team lead
 - Follow the rebuttal protocol in references/rebuttal-protocol.md
 ~~~
 
-### Run the Debate
+### Wait for Verdict Summary
 
-For each debatable finding, in severity order:
+The DA will run the entire debate via peer DMs with hat agents. When finished, it sends back a single verdict summary message. Wait for this message.
 
-1. **Message the relevant hat teammate** asking it to present the finding
-2. **Message the Developer Advocate** with the hat's finding presentation
-3. **Message the hat teammate** with the Developer's response
-4. **Render verdict** (Upheld, Withdrawn, or Downgraded) based on the exchange
-
-Record each verdict and the key arguments from both sides. The hat agents retain their full Phase 1 reasoning context, so their rebuttals draw on the analysis they already performed.
+If the DA goes idle without sending a summary, message it: "Send your verdict summary now."
 
 ### Produce the Revised Report
 
-After all findings have been debated, produce the revised report following the format in `references/revised-report-format.md`.
+Using the DA's verdict summary, produce the revised report following the format in `references/revised-report-format.md`.
 
 Recalculate each hat's verdict based on remaining upheld findings:
 - FAIL if any Upheld Critical findings
@@ -260,7 +257,7 @@ Recalculate each hat's verdict based on remaining upheld findings:
 
 ### Clean Up the Team
 
-After the rebuttal phase completes (whether report generation succeeds or fails):
+After the revised report is produced (whether successfully or not):
 1. Send shutdown requests to all teammates
 2. Clean up the team resources (TeamDelete)
 
@@ -268,6 +265,7 @@ After the rebuttal phase completes (whether report generation succeeds or fails)
 
 - Dispatch ALL selected hats in a single message for parallel execution (Phase 1)
 - Hat agents stay alive between Phase 1 and Phase 2 — do NOT shut them down before rebuttal
+- The Developer Advocate coordinates the entire debate via peer DMs — the Blue Hat does NOT relay messages
 - If a hat agent fails or returns malformed output, note it in the report but continue with other hats
 - Keep synthesis concise — the hat reports have the details, the synthesis highlights what matters most
 - If agent teams are unavailable, fall back to Task tool for Phase 1 and skip rebuttal gracefully
