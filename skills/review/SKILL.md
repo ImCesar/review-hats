@@ -183,23 +183,29 @@ If a severity section has no findings across all hats, omit it entirely.
 
 **If skipped**, present the Phase 1 report from Step 5 as the final output and stop.
 
-### 6a: Check Agent Teams Availability
+### Check Agent Teams Availability
 
 Before attempting to create an agent team, verify the feature is available. If agent teams fail to initialize, fall back gracefully:
 
 - Present the Phase 1 report as-is
 - Append a note: "Rebuttal phase skipped — enable agent teams with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings for automated finding challenges."
 
-### 6b: Collect Debatable Findings
+### Collect Debatable Findings
 
-From the Phase 1 report, extract all Critical and Important findings. For each finding, note:
-- Which hat produced it
-- The severity level
-- The full finding text (What + Why)
+From the Phase 1 report, extract all Critical and Important findings into this structure:
 
-Group by severity: Criticals first, then Important.
+```
+Hat: [color] [domain]
+Severity: [Critical | Important]
+Title: [finding title]
+Location: [file:line]
+What: [description]
+Why: [impact]
+```
 
-### 6c: Create the Agent Team
+Group by severity: Criticals first, then Important. This structure is the contract between Phase 1 (Step 5) and Phase 2 (Step 6) — the debate loop expects each finding in this format.
+
+### Create the Agent Team
 
 Tell Claude to create an agent team for the rebuttal. The team structure:
 
@@ -212,10 +218,10 @@ Spawn prompt for the Developer Advocate:
 You are the Developer Advocate in a rebuttal review. Your job is to defend the code author's design choices.
 
 ## Changed Files
-<list of changed files>
+<one file path per line>
 
 ## Diff
-<full diff output>
+<complete git diff output from Step 2>
 
 ## Instructions
 - Follow your agent definition exactly
@@ -230,7 +236,7 @@ Spawn prompt for each hat teammate:
 You are the [Color] Hat in a rebuttal review. You produced findings during Phase 1 that are now being challenged.
 
 ## Your Phase 1 Findings
-<this hat's findings from Phase 1>
+<this hat's findings extracted using the format from "Collect Debatable Findings">
 
 ## Instructions
 - The Developer Advocate will respond to each of your findings
@@ -239,7 +245,7 @@ You are the [Color] Hat in a rebuttal review. You produced findings during Phase
 - Only counter if you have specific evidence the defense is insufficient
 ```
 
-### 6d: Run the Debate
+### Run the Debate
 
 For each debatable finding, in severity order:
 
@@ -250,7 +256,7 @@ For each debatable finding, in severity order:
 
 Record each verdict and the key arguments from both sides.
 
-### 6e: Produce the Revised Report
+### Produce the Revised Report
 
 After all findings have been debated, produce the revised report following the format in `references/revised-report-format.md`.
 
@@ -259,11 +265,11 @@ Recalculate each hat's verdict based on remaining upheld findings:
 - WARN if any Upheld Important findings (no Upheld Criticals)
 - PASS if all Critical/Important were Withdrawn or Downgraded below Important
 
-### 6f: Clean Up the Team
+### Clean Up the Team
 
-After the revised report is produced:
+After the rebuttal phase completes (whether report generation succeeds or fails):
 1. Ask all teammates to shut down
-2. Clean up the team resources
+2. Clean up the team resources (TeamDelete)
 
 ## Important Notes
 
@@ -273,4 +279,3 @@ After the revised report is produced:
 - Keep synthesis concise — the hat reports have the details, the synthesis highlights what matters most
 - Phase 2 (rebuttal) uses agent teams, NOT the Task tool — these are full Claude Code sessions
 - If agent teams are unavailable or fail, fall back to the Phase 1 report gracefully
-- Always clean up the agent team after the rebuttal phase completes
