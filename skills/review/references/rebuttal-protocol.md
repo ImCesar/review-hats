@@ -77,9 +77,15 @@ After the exchange, the team lead renders a verdict:
 
 | Outcome | When to Use |
 |---------|-------------|
-| **Upheld** | Developer conceded, or Developer defended but hat's counter was stronger |
-| **Withdrawn** | Developer defended and hat accepted, or Developer's evidence is compelling despite counter |
-| **Downgraded** | Developer partially defended successfully — severity reduced one level |
+| **Upheld** | Developer CONCEDEd, OR hat COUNTERed with specific evidence and the finding still demonstrates real risk |
+| **Withdrawn** | Hat ACCEPTed the defense, OR Developer cited specific evidence (code, docs, tests) that directly addresses the concern |
+| **Downgraded** | Developer used PARTIAL with evidence of mitigating factors — concern is real but impact is lower than claimed |
+
+### Verdict Guidelines
+
+- **Evidence wins over assertion.** A position backed by file paths, line numbers, or documented patterns outweighs one that argues in the abstract.
+- **Specificity wins over generality.** "This is handled at `auth.py:45`" beats "this is probably handled somewhere."
+- **When in doubt, uphold.** A finding that survives debate is worth keeping. False negatives are costlier than false positives in code review.
 
 ## Rules
 
