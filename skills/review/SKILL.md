@@ -3,8 +3,8 @@ name: review
 description: >
   Run a multi-perspective code review using specialized hat agents.
   Each hat reviews from a distinct angle (security, architecture, correctness, etc.)
-  and produces findings grouped by severity. Uses agent teams to keep hat agents alive
-  for rebuttal debate when findings are challenged.
+  and produces findings grouped by severity. Uses tiered model selection (Sonnet for
+  depth-critical hats, Haiku for pattern-matching) and agent teams for rebuttal debate.
 ---
 
 # Blue Hat Orchestrator: Review Hats

@@ -97,6 +97,6 @@ After the exchange, the Developer Advocate renders a verdict:
 
 - One finding at a time. Do not batch.
 - Each participant gets exactly one turn per finding (present → respond → rebut → verdict).
-- No back-and-forth beyond the single rebuttal. The lead's verdict is final.
+- No back-and-forth beyond the single rebuttal. The Developer Advocate's verdict is final.
 - All participants must cite specific evidence (file paths, line numbers, patterns).
 - Do NOT write code or suggest fixes during the debate.
