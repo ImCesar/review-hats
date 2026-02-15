@@ -28,7 +28,31 @@ When presenting a finding for debate, restate it concisely:
 
 ## Developer Response
 
-See the developer-advocate agent definition for the three response formats: CONCEDE, DEFEND, or PARTIAL.
+After a finding is presented, the Developer Advocate responds with one of three positions:
+
+### Concede
+Use when the finding is genuinely valid.
+```
+**Position: CONCEDE**
+This finding is valid. [1 sentence explaining why.]
+```
+
+### Defend
+Use when specific evidence shows the code is intentional.
+```
+**Position: DEFEND**
+This is intentional. [Explain the design choice with specific evidence.]
+- Evidence: [cite file:line, commit message, pattern, or doc]
+```
+
+### Partially Defend
+Use when the concern is real but severity is too high.
+```
+**Position: PARTIAL**
+The concern is valid but the severity should be lower. [Explain why.]
+- Evidence: [cite mitigating factors from the codebase]
+- Suggested severity: [e.g., Critical → Important]
+```
 
 ## Hat Rebuttal
 
