@@ -9,10 +9,11 @@ Findings are debated one at a time, in severity order: Critical first, then Impo
 For each finding:
 
 ```
-1. Finding presented    → Hat restates its finding (What + Why)
-2. Developer responds   → Concedes, defends with evidence, or partially defends
-3. Hat rebuts           → Accepts defense, or strengthens argument with counter-evidence
-4. Verdict rendered     → Lead determines outcome
+1. Developer requests   → Developer Advocate messages the hat agent to present the finding
+2. Finding presented    → Hat restates its finding (What + Why)
+3. Developer responds   → Concedes, defends with evidence, or partially defends
+4. Hat rebuts           → Accepts defense, or strengthens argument with counter-evidence
+5. Verdict rendered     → Developer Advocate determines outcome
 ```
 
 ## Finding Presentation (Hat)
@@ -72,9 +73,9 @@ The defense is insufficient. [Explain why the finding still stands.]
 - Counter-evidence: [specific evidence that the concern remains]
 ```
 
-## Verdict (Lead Only)
+## Verdict (Developer Advocate)
 
-After the exchange, the team lead renders a verdict:
+After the exchange, the Developer Advocate renders a verdict:
 
 | Outcome | When to Use |
 |---------|-------------|
