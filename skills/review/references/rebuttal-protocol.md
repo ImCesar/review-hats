@@ -84,6 +84,8 @@ After the exchange, the team lead renders a verdict:
 
 **Disambiguation:** When Developer says PARTIAL and hat says ACCEPT, the verdict is always **Downgraded** (never Withdrawn). ACCEPT on a PARTIAL confirms the severity reduction, not the absence of a concern.
 
+**Downgrade targets:** When a finding is Downgraded, the new severity is determined by the Developer's suggestion (e.g., "Critical → Important"). If the Developer suggests a specific target, use it. If no target is suggested, downgrade by exactly one level: Critical → Important, Important → Minor.
+
 ### Verdict Guidelines
 
 - **Evidence wins over assertion.** A position backed by file paths, line numbers, or documented patterns outweighs one that argues in the abstract.

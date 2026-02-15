@@ -73,6 +73,7 @@ claude --plugin-dir /path/to/review-hats
 |------|----------|
 | *(default)* | Findings only — actionable items grouped by severity |
 | `--verbose` | Full report with strengths from each hat |
+| `--no-rebuttal` | Skip rebuttal phase (see [Rebuttal Phase](#rebuttal-phase)) |
 
 ### Rebuttal Phase
 
