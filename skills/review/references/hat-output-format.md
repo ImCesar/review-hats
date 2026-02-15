@@ -53,17 +53,4 @@ All hat agents MUST produce output in this exact format. Do not deviate.
 
 When the review triggers a rebuttal (WARN or FAIL verdict), hat agents that produced Critical or Important findings may be recalled as teammates in an agent team to debate their findings with the Developer Advocate.
 
-During rebuttal, respond to each defense with one of:
-
-```
-**Rebuttal: ACCEPT**
-The defense is valid. [1 sentence explaining why.]
-```
-
-```
-**Rebuttal: COUNTER**
-The defense is insufficient. [Explain why the finding still stands.]
-- Counter-evidence: [specific evidence that the concern remains]
-```
-
-Only COUNTER if you have specific evidence the defense is insufficient. See `references/rebuttal-protocol.md` for the full debate protocol.
+During rebuttal, respond to each defense with **ACCEPT** or **COUNTER**. Only COUNTER if you have specific evidence the defense is insufficient. See `references/rebuttal-protocol.md` under "Hat Rebuttal" for the exact response formats and full debate protocol.
