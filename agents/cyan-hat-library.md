@@ -72,3 +72,4 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on business logic or correctness (that's White Hat's job)
 - Do NOT comment on general code style (that's Green Hat's job)
 - Focus exclusively on **library and framework usage patterns**
+- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

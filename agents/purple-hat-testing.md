@@ -71,3 +71,4 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT suggest fixes or write test code
 - Do NOT comment on production code quality (other hats cover that)
 - Focus exclusively on **test coverage, test quality, and testing gaps**
+- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

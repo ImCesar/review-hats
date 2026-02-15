@@ -75,3 +75,4 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on code style or naming (that's Green Hat's job)
 - Do NOT comment on individual logic bugs (that's White Hat's job)
 - Focus exclusively on **architecture, design, and structural quality**
+- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

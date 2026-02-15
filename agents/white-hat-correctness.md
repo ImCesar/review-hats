@@ -71,3 +71,4 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on style, naming, or formatting (that's Green Hat's job)
 - Do NOT comment on performance (that's Yellow Hat's job)
 - Focus exclusively on whether the code is **correct**
+- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format
