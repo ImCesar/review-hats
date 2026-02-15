@@ -74,56 +74,62 @@ If the diff is empty, inform the user: "No changes found for the specified scope
 
 Announce which hats were selected and why, briefly.
 
-## Step 4: Create Review Team and Dispatch Hats
+## Step 4: Dispatch Hat Agents
 
-### Check Agent Teams Availability
+Spawn all selected hat agents using the Task tool in a **single message** so they run in parallel.
 
-Try to create an agent team named `review-hats`. If agent teams are unavailable (feature not enabled), fall back to the Task tool:
+### Model Selection
 
-- Spawn hat agents using the Task tool in a **single message** (fire-and-forget)
-- Note internally that rebuttal will be unavailable (Phase 2 requires agent teams)
-- If the overall verdict is WARN or FAIL, append to the report: "Rebuttal phase skipped — enable agent teams with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings for automated finding challenges."
+Use tiered model selection based on hat type:
 
-### Agent Team Dispatch (preferred)
+| Hat | Model | Rationale |
+|-----|-------|-----------|
+| White (Correctness) | `sonnet` | Needs depth for logic bugs, edge cases |
+| Red (Security) | `sonnet` | Needs depth for vulnerability analysis |
+| Green (Maintainability) | `haiku` | Structured pattern-matching |
+| Indigo (Architecture) | `haiku` | Module boundary analysis |
+| Yellow (Performance) | `haiku` | Algorithmic complexity patterns |
+| Orange (Contracts) | `haiku` | Breaking change detection |
+| Purple (Testing) | `haiku` | Coverage gap patterns |
+| Cyan (Library) | `haiku` | Framework usage patterns |
 
-If agent teams are available, spawn all selected hat agents as teammates in a **single message** so they run in parallel.
+### Spawn Prompt
 
-Each agent's spawn prompt MUST include:
+Each Task tool dispatch MUST include:
 
 1. The full diff output (from Step 2)
 2. The list of changed files
 3. Whether verbose mode is on (for the Strengths section)
 4. Instructions to read surrounding code files for context using Read/Grep/Glob tools
 5. A reminder to follow the standardized output format from `references/hat-output-format.md`
-6. Instructions to send findings to the lead via SendMessage and then wait
 
-**Spawn prompt for each hat teammate:**
+**Task tool dispatch for each hat:**
 
 ~~~
-Review the following code changes from the perspective described in your agent definition.
+Task tool (review-hats:[agent-name]):
+  description: "[Color] Hat [domain] review"
+  model: [sonnet or haiku per table above]
+  prompt: |
+    Review the following code changes from the perspective described in your agent definition.
 
-## Changed Files
-<one file path per line>
+    ## Changed Files
+    <one file path per line>
 
-## Diff
-<complete git diff output from Step 2>
+    ## Diff
+    <complete git diff output from Step 2>
 
-## Instructions
-- Analyze the diff thoroughly from your specialized perspective
-- Use Read, Grep, and Glob tools to examine surrounding code for context
-- Follow the output format exactly as specified in references/hat-output-format.md
-- Severity: Critical = must fix before merge, Important = should fix, Minor = nice to fix
-- Verdict: FAIL if any Critical, WARN if any Important, PASS otherwise
-<if verbose>- Include a "Strengths" section noting what's done well</if>
-<if not verbose>- Do NOT include a Strengths section</if>
-- Do NOT suggest fixes or write code. Report findings only.
-- After completing your review, send your full report to the team lead.
-- Then wait — you may be recalled for rebuttal if your findings are challenged.
+    ## Instructions
+    - Analyze the diff thoroughly from your specialized perspective
+    - Use Read, Grep, and Glob tools to examine surrounding code for context
+    - Follow the output format exactly as specified in references/hat-output-format.md
+    - Severity: Critical = must fix before merge, Important = should fix, Minor = nice to fix
+    - Verdict: FAIL if any Critical, WARN if any Important, PASS otherwise
+    <if verbose>- Include a "Strengths" section noting what's done well</if>
+    <if not verbose>- Do NOT include a Strengths section</if>
+    - Do NOT suggest fixes or write code. Report findings only.
 ~~~
 
-### Collect Results
-
-Wait for all hat agents to send their findings via messages. As each hat goes idle after sending its report, its findings are available. Proceed to Step 5 once all hats have reported.
+Dispatch ALL selected hats in a single message for parallel execution.
 
 ## Step 5: Synthesize the Report
 
