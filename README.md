@@ -16,7 +16,7 @@ A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hat
 | 🟡 Yellow | `y` | Performance — complexity, N+1 queries, memory, bottlenecks |
 | 🟢 Green | `g` | Maintainability — readability, naming, conventions |
 | 🟠 Orange | `o` | Contract Safety — breaking changes, API surface, schemas |
-| 🟣 Purple | `p` | Testing — coverage gaps, test quality, missing cases |
+| 🟤 Purple | `p` | Testing — coverage gaps, test quality, missing cases |
 | 🔵 Cyan | `c` | Library/Framework — idiomatic usage, anti-patterns, deprecated APIs |
 
 ## Installation

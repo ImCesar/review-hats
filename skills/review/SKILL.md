@@ -170,7 +170,7 @@ After all hat agents return, combine their results into a unified report.
 | Yellow (Performance) | 🟡 |
 | Green (Maintainability) | 🟢 |
 | Orange (Contracts) | 🟠 |
-| Purple (Testing) | 🟣 |
+| Purple (Testing) | 🟤 |
 | Cyan (Library) | 🔵 |
 
 ### Overall Verdict Logic
@@ -253,6 +253,7 @@ You are the [Color] Hat in a rebuttal review. You produced findings during Phase
 <complete git diff output from Step 2>
 
 ## Instructions
+- Before responding to any messages, read `references/rebuttal-protocol.md` for the debate format
 - The Developer Advocate will message you to present each finding for debate
 - Present findings using the format in references/rebuttal-protocol.md
 - For each Developer response, reply with ACCEPT or COUNTER
