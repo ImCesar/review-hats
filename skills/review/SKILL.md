@@ -3,8 +3,8 @@ name: review
 description: >
   Run a multi-perspective code review using specialized hat agents.
   Each hat reviews from a distinct angle (security, architecture, correctness, etc.)
-  and produces findings grouped by severity. Uses tiered model selection (Sonnet for
-  depth-critical hats, Haiku for pattern-matching) and agent teams for rebuttal debate.
+  and produces findings grouped by severity. All agents run on Sonnet. Agent teams
+  coordinate rebuttal debate when findings are challenged.
 ---
 
 # Blue Hat Orchestrator: Review Hats
@@ -78,23 +78,6 @@ Announce which hats were selected and why, briefly.
 
 Spawn all selected hat agents using the Task tool in a **single message** so they run in parallel.
 
-### Model Selection
-
-Use tiered model selection based on hat type:
-
-| Hat | Model | Rationale |
-|-----|-------|-----------|
-| White (Correctness) | `sonnet` | Needs depth for logic bugs, edge cases |
-| Red (Security) | `sonnet` | Needs depth for vulnerability analysis |
-| Green (Maintainability) | `haiku` | Structured pattern-matching |
-| Indigo (Architecture) | `haiku` | Module boundary analysis |
-| Yellow (Performance) | `haiku` | Algorithmic complexity patterns |
-| Orange (Contracts) | `haiku` | Breaking change detection |
-| Purple (Testing) | `haiku` | Coverage gap patterns |
-| Cyan (Library) | `haiku` | Framework usage patterns |
-
-### Spawn Prompt
-
 Each Task tool dispatch MUST include:
 
 1. The full diff output (from Step 2)
@@ -108,7 +91,7 @@ Each Task tool dispatch MUST include:
 ~~~
 Task tool (review-hats:[agent-name]):
   description: "[Color] Hat [domain] review"
-  model: [sonnet or haiku per table above]
+  model: sonnet
   prompt: |
     Review the following code changes from the perspective described in your agent definition.
 
@@ -234,8 +217,8 @@ Number findings sequentially: C1, C2... for Critical, I1, I2... for Important. I
 
 Create a minimal agent team with only the agents needed for debate:
 
-1. **Developer Advocate** — debate coordinator (inherits user's model)
-2. **Only the hat agents that produced Critical or Important findings** — on `sonnet` model for debate quality
+1. **Developer Advocate** — debate coordinator, on `sonnet`
+2. **Only the hat agents that produced Critical or Important findings** — on `sonnet`
 
 Spawn all teammates in a **single message**:
 

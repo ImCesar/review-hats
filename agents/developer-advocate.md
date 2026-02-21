@@ -7,7 +7,7 @@ description: >
   back to the Blue Hat. Participates only in Phase 2 (rebuttal), never Phase 1.
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
-model: inherit
+model: sonnet
 ---
 
 # Developer Advocate: Debate Coordinator

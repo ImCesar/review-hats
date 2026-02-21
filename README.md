@@ -4,7 +4,7 @@ A Claude Code plugin that runs multi-perspective code reviews using specialized 
 
 ## How It Works
 
-A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hats, dispatches them **in parallel** using tiered model selection (Sonnet for depth-critical reviews, Haiku for pattern-matching), and synthesizes their findings into a single report grouped by severity. When findings are challenged, a Developer Advocate coordinates the rebuttal debate via direct messages with hat agents, then reports verdicts back to the orchestrator.
+A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hats, dispatches them **in parallel** on Sonnet, and synthesizes their findings into a single report grouped by severity. When findings are challenged, a Developer Advocate coordinates the rebuttal debate via direct messages with hat agents, then reports verdicts back to the orchestrator.
 
 ### The 8 Review Hats
 
