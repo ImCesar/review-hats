@@ -3,8 +3,7 @@ name: review
 description: >
   Run a multi-perspective code review using specialized hat agents.
   Each hat reviews from a distinct angle (security, architecture, correctness, etc.)
-  and produces findings grouped by severity. All agents run on Sonnet. Agent teams
-  coordinate rebuttal debate when findings are challenged.
+  and produces findings grouped by severity. All agents run on Sonnet.
 ---
 
 # Blue Hat Orchestrator: Review Hats
@@ -186,108 +185,14 @@ If a severity section has no findings across all hats, omit it entirely.
 **Skip this step if:**
 - The overall verdict is PASS (nothing to debate)
 - The user passed `--no-rebuttal`
-- No Critical or Important findings exist
 
 **If skipped**, present the Phase 1 report from Step 5 as the final output and stop.
 
-### Check Agent Teams Availability
-
-Try to create an agent team named `rebuttal`. If agent teams are unavailable (feature not enabled):
-
-- Present the Phase 1 report as the final output
-- Append to the report: "Rebuttal phase skipped — enable agent teams with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings for automated finding challenges."
-- Stop.
-
-### Collect Debatable Findings
-
-From the Phase 1 report, extract all Critical and Important findings into this structure:
-
-~~~
-[ID]: [Title]
-Hat: [agent-name]
-Severity: [Critical | Important]
-Location: [file:line]
-What: [description]
-Why: [impact]
-~~~
-
-Number findings sequentially: C1, C2... for Critical, I1, I2... for Important. Include the hat's **agent name** (e.g., `white-hat-correctness`, `red-hat-security`) matching the names in the Step 1 table.
-
-### Spawn Rebuttal Team
-
-Create a minimal agent team with only the agents needed for debate:
-
-1. **Developer Advocate** — debate coordinator, on `sonnet`
-2. **Only the hat agents that produced Critical or Important findings** — on `sonnet`
-
-Spawn all teammates in a **single message**:
-
-**Developer Advocate spawn prompt:**
-~~~
-You are the Developer Advocate and debate coordinator for this rebuttal review.
-
-## Changed Files
-<one file path per line>
-
-## Diff
-<complete git diff output from Step 2>
-
-## Debatable Findings
-<all findings from the "Collect Debatable Findings" step above, in severity order>
-
-## Instructions
-- Follow your agent definition exactly
-- For each finding, message the hat teammate by name (peer DM) to run the debate
-- After all findings are debated, send your verdict summary back to the team lead
-- Follow the rebuttal protocol in references/rebuttal-protocol.md
-~~~
-
-**Hat agent spawn prompt (for each hat with debatable findings):**
-~~~
-You are the [Color] Hat in a rebuttal review. You produced findings during Phase 1 that are now being challenged.
-
-## Your Phase 1 Findings
-<this hat's Critical and Important findings>
-
-## Diff
-<complete git diff output from Step 2>
-
-## Instructions
-- Before responding to any messages, read `references/rebuttal-protocol.md` for the debate format
-- The Developer Advocate will message you to present each finding for debate
-- Present findings using the format in references/rebuttal-protocol.md
-- For each Developer response, reply with ACCEPT or COUNTER
-- Only COUNTER if you have specific evidence the defense is insufficient
-- Use Read, Grep, and Glob tools to verify claims made in defenses
-~~~
-
-### Wait for Verdict Summary
-
-The DA will run the entire debate via peer DMs with hat agents. When finished, it sends back a single verdict summary message. Wait for this message.
-
-If the DA goes idle without sending a summary, message it: "Send your verdict summary now."
-
-### Produce the Revised Report
-
-Using the DA's verdict summary, produce the revised report following the format in `references/revised-report-format.md`.
-
-Recalculate each hat's verdict based on remaining upheld findings:
-- FAIL if any Upheld Critical findings
-- WARN if any Upheld Important findings (no Upheld Criticals)
-- PASS if all Critical/Important were Withdrawn or Downgraded below Important
-
-### Clean Up the Team
-
-After the revised report is produced (whether successfully or not):
-1. Send shutdown requests to all teammates
-2. Clean up the team resources (TeamDelete)
+If the verdict is WARN or FAIL, read `references/rebuttal-orchestration.md` and follow it to run the rebuttal phase.
 
 ## Important Notes
 
 - Dispatch ALL selected hats in a single message for parallel execution (Phase 1, Task tool)
 - Phase 1 hats are fire-and-forget — they return findings and die
-- Phase 2 spawns a fresh agent team with only the DA and hats that had debatable findings
-- The Developer Advocate coordinates the entire debate via peer DMs — the Blue Hat does NOT relay messages
 - If a hat agent fails or returns malformed output, note it in the report but continue with other hats
 - Keep synthesis concise — the hat reports have the details, the synthesis highlights what matters most
-- Always clean up the rebuttal team after completing the review
