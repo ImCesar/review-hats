@@ -77,4 +77,3 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on internal implementation details (only public contracts matter)
 - Do NOT comment on code style or correctness (other hats cover those)
 - Focus exclusively on **contract safety and breaking changes**
-- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

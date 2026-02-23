@@ -72,4 +72,3 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on correctness or logic bugs (that's White Hat's job)
 - Do NOT comment on performance (that's Yellow Hat's job)
 - Focus exclusively on **maintainability, readability, and conventions**
-- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

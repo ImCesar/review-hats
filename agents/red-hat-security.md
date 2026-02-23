@@ -79,4 +79,3 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on code style or architecture (other hats cover those)
 - Focus exclusively on **security** risks and vulnerabilities
 - When in doubt about severity, err on the side of caution (rate higher)
-- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

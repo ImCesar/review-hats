@@ -81,4 +81,3 @@ Follow the format specified in `references/hat-output-format.md` exactly.
 - Do NOT comment on code style or readability (that's Green Hat's job)
 - Do NOT comment on correctness (that's White Hat's job)
 - Focus exclusively on **performance, efficiency, and resource usage**
-- During rebuttal, you may be recalled to debate findings — see `references/hat-output-format.md` for the rebuttal response format

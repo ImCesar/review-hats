@@ -48,9 +48,3 @@ All hat agents MUST produce output in this exact format. Do not deviate.
 - Be specific and actionable. "Could be improved" is not a finding.
 - Do NOT suggest fixes or write code. Report findings only.
 - Reference the specific diff lines where you found the issue.
-
-## Rebuttal Phase
-
-When the review triggers a rebuttal (WARN or FAIL verdict), hat agents that produced Critical or Important findings may be recalled as teammates in an agent team to debate their findings with the Developer Advocate.
-
-During rebuttal, respond to each defense with **ACCEPT** or **COUNTER**. Only COUNTER if you have specific evidence the defense is insufficient. See `references/rebuttal-protocol.md` under "Hat Rebuttal" for the exact response formats and full debate protocol.
