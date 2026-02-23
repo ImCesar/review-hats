@@ -9,11 +9,9 @@ Findings are debated one at a time, in severity order: Critical first, then Impo
 For each finding:
 
 ```
-1. Developer requests   → Developer Advocate messages the hat agent to present the finding
-2. Finding presented    → Hat restates its finding (What + Why)
-3. Developer responds   → Concedes, defends with evidence, or partially defends
-4. Hat rebuts           → Accepts defense, or strengthens argument with counter-evidence
-5. Verdict rendered     → Developer Advocate determines outcome
+1. DA evaluates        → Developer Advocate gathers evidence and forms a position
+2. Hat responds        → Hat reviews DA's position and responds ACCEPT or COUNTER
+3. Verdict rendered    → Blue Hat (orchestrator) applies the verdict table
 ```
 
 ## Finding Presentation (Hat)
@@ -73,9 +71,9 @@ The defense is insufficient. [Explain why the finding still stands.]
 - Counter-evidence: [specific evidence that the concern remains]
 ```
 
-## Verdict (Developer Advocate)
+## Verdict (Blue Hat Orchestrator)
 
-After the exchange, the Developer Advocate renders a verdict:
+After the exchange, the Blue Hat applies these verdicts:
 
 | Outcome | When to Use |
 |---------|-------------|
@@ -97,6 +95,6 @@ After the exchange, the Developer Advocate renders a verdict:
 
 - One finding at a time. Do not batch.
 - Each participant gets exactly one turn per finding (present → respond → rebut → verdict).
-- No back-and-forth beyond the single rebuttal. The Developer Advocate's verdict is final.
+- No back-and-forth beyond the single rebuttal. The Blue Hat's verdict is final.
 - All participants must cite specific evidence (file paths, line numbers, patterns).
 - Do NOT write code or suggest fixes during the debate.
