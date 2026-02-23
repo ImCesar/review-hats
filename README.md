@@ -4,7 +4,7 @@ A Claude Code plugin that runs multi-perspective code reviews using specialized 
 
 ## How It Works
 
-A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hats, dispatches them **in parallel** on Sonnet, and synthesizes their findings into a single report grouped by severity. When findings are challenged, a Developer Advocate coordinates the rebuttal debate via direct messages with hat agents, then reports verdicts back to the orchestrator.
+A Blue Hat orchestrator (the skill) analyzes your diff, selects the relevant hats, dispatches them **in parallel** on Sonnet, and synthesizes their findings into a single report grouped by severity. When findings are challenged, a Developer Advocate evaluates each finding against the codebase, hat agents respond, and the orchestrator renders verdicts.
 
 ### The 8 Review Hats
 
@@ -76,10 +76,10 @@ claude --plugin-dir /path/to/review-hats
 
 ### Rebuttal Phase
 
-When a review produces a **WARN** or **FAIL** verdict, review-hats automatically runs a rebuttal phase using Claude Code agent teams. A **Developer Advocate** explores the codebase to understand design intent, then debates each Critical and Important finding with the hat that produced it.
+When a review produces a **WARN** or **FAIL** verdict, review-hats automatically runs a rebuttal phase. A **Developer Advocate** subagent explores the codebase and evaluates each Critical and Important finding, then hat subagents respond with ACCEPT or COUNTER. The orchestrator renders final verdicts.
 
 Each finding gets a verdict:
-- **Upheld** — Finding stands after debate
+- **Upheld** — Finding stands after challenge
 - **Withdrawn** — Finding dismissed; Developer showed it was intentional
 - **Downgraded** — Finding valid but severity reduced
 
@@ -89,8 +89,6 @@ To skip the rebuttal phase:
 ```
 /review-hats:review --no-rebuttal
 ```
-
-> **Note**: Rebuttal requires the experimental agent teams feature. Enable it by adding `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` to your settings. If not enabled, the Phase 1 report is presented as-is.
 
 ### Severity Levels
 
@@ -119,9 +117,10 @@ review-hats/
 │   │   └── references/
 │   │       ├── hat-output-format.md   # Shared output format
 │   │       ├── rebuttal-protocol.md   # Debate protocol for rebuttal
+│   │       ├── rebuttal-orchestration.md # Phase 2 rebuttal orchestration
 │   │       └── revised-report-format.md # Post-rebuttal report format
 ├── agents/
-│   ├── developer-advocate.md          # Debate coordinator for rebuttal
+│   ├── developer-advocate.md          # Finding evaluator for rebuttal
 │   ├── red-hat-security.md
 │   ├── indigo-hat-architecture.md
 │   ├── white-hat-correctness.md
