@@ -11,7 +11,7 @@
       "name": "review-hats",
       "source": "./",
       "description": "Multi-perspective code review with specialized AI agents inspired by Thinking Hats.",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "category": "development",
       "author": {
         "name": "Cesar Avitia"
