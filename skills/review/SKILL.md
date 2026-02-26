@@ -3,7 +3,8 @@ name: review
 description: >
   Run a multi-perspective code review using specialized hat agents.
   Each hat reviews from a distinct angle (security, architecture, correctness, etc.)
-  and produces findings grouped by severity. All agents run on Sonnet.
+  and produces findings grouped by severity. Includes a rebuttal phase
+  that challenges findings when the verdict is WARN or FAIL.
 ---
 
 # Blue Hat Orchestrator: Review Hats

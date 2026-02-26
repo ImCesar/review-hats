@@ -129,8 +129,6 @@ review-hats/
 │   ├── orange-hat-contracts.md
 │   ├── purple-hat-testing.md
 │   └── cyan-hat-library.md
-├── commands/
-│   └── review.md                      # Thin command alias
 └── README.md
 ```
 

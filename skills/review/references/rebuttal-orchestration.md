@@ -1,6 +1,6 @@
 # Rebuttal Phase Orchestration
 
-When the Phase 1 verdict is WARN or FAIL, the Blue Hat follows this document to run the rebuttal phase using two-pass Task tool subagents.
+When the Phase 1 verdict is WARN or FAIL, the Blue Hat follows this document to run the rebuttal phase using Task tool subagents in three passes.
 
 ## Collect Debatable Findings
 
@@ -32,7 +32,7 @@ Task tool (review-hats:developer-advocate):
     <one file path per line>
 
     ## Diff
-    <complete git diff output from Step 2>
+    <complete git diff output>
 
     ## Debatable Findings
     <all findings from the "Collect Debatable Findings" step above, in severity order>
@@ -64,7 +64,7 @@ Task tool (review-hats:[agent-name]):
     <DA's positions for this hat's findings only>
 
     ## Diff
-    <complete git diff output from Step 2>
+    <complete git diff output>
 
     ## Instructions
     - Read `references/rebuttal-protocol.md` for the response format
