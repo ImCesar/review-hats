@@ -1,5 +1,5 @@
 ---
-name: review
+name: review-hats:review
 description: >
   Run a multi-perspective code review using specialized hat agents.
   Each hat reviews from a distinct angle (security, architecture, correctness, etc.)
